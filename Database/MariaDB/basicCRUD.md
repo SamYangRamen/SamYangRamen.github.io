@@ -186,10 +186,10 @@ WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
 - 논리 연산자 (AND OR)
   `SELECT * FROM 테이블명 WHERE (필드명='값') OR ( 필드명 ='값');`
 - LIKE (와일드카드 %, _와 함께 사용)
-  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '홍%'` 홍으로 시작하는 모든 값
-  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '%홍%'` 홍이 들어간 모든 값
-  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '홍__'` 홍으로 시작되고 뒤에 2글자 붙은 모든 값
-  `SELECT * FROM 테이블명 WHERE 필드명 NOT LIKE '홍%'` 홍으로 시작하지 않는 모든 값
+  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '홍%'` 홍으로 시작하는 모든 값\n
+  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '%홍%'` 홍이 들어간 모든 값\n
+  `SELECT * FROM 테이블명 WHERE 필드명 LIKE '홍__'` 홍으로 시작되고 뒤에 2글자 붙은 모든 값\n
+  `SELECT * FROM 테이블명 WHERE 필드명 NOT LIKE '홍%'` 홍으로 시작하지 않는 모든 값\n
 - IN, BETWEEN
   `SELECT * FROM 테이블명 WHERE 필드명 IN (‘London’,‘Seoul’);`
   `SELECT * FROM 테이블명 WHERE 필드명 BETWEEN 3 AND 10;`
