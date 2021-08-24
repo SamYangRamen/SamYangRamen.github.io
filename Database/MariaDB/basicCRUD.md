@@ -12,7 +12,7 @@ DB의 종류를 막론하고 반드시 가지고 있는 4가지 기능
 
 ### 1. CREATE
 
-```mariadb
+```mysql
 CREATE TABLE `BASIC_DATA` (
 	`거래처명` VARCHAR(50),
 	`품명` VARCHAR(50),
@@ -29,7 +29,7 @@ CREATE TABLE `BASIC_DATA` (
 
 ### 2. READ
 
-```mariadb
+```mysql
 DESC `BASIC_DATA`;
 ```
 
@@ -49,25 +49,25 @@ DESC `BASIC_DATA`;
 
 #### 테이블에 새로운 컬럼 추가
 
-```mariadb
+```mysql
 ALTER TABLE [테이블명] ADD COLUMN [추가할 컬럼명][추가할 컬럼 데이터형];
 ```
 
 #### 테이블 컬럼 타입 변경
 
-```mariadb
+```mysql
 ALTER TABLE [테이블명] MODIFY COLUMN [변경할 컬럼명][변경할 컬럼 타입];
 ```
 
 #### 테이블 컬럼 이름 변경
 
-```mariadb
+```mysql
 ALTER TABLE [테이블명] CHANGE COLUMN [기존 컬럼 명][변경할 컬럼 명][변경할 컬럼 타입];
 ```
 
 #### 테이블 컬럼 삭제
 
-```mariadb
+```mysql
 ALTER TABLE [테이블명] DROP COLUMN [삭제할 컬럼 명];
 ```
 
@@ -77,7 +77,7 @@ ALTER TABLE [테이블명] DROP COLUMN [삭제할 컬럼 명];
 
 ### 4. DELETE
 
-```mariadb
+```mysql
 DROP TABLE IF EXISTS `BASIC_DATA`;
 ```
 
@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `BASIC_DATA`;
 
 ### 1. CREATE (INSERT)
 
-```mariadb
+```mysql
 INSERT INTO `BASIC_DATA`
 VALUES
 	('가양 아트박스', '합지 스프링노트', '노트', 20, 2500),
@@ -115,7 +115,7 @@ VALUES
 
 ### 2. READ (SELECT)
 
-```mariadb
+```mysql
 SELECT * FROM `BASIC_DATA`;
 ```
 
@@ -134,7 +134,7 @@ SELECT * FROM `BASIC_DATA`;
 
 ------
 
-```mariadb
+```mysql
 SELECT DISTINCT 거래처명 AS 매장명 FROM `BASIC_DATA`;
 ```
 
@@ -148,7 +148,7 @@ SELECT DISTINCT 거래처명 AS 매장명 FROM `BASIC_DATA`;
 
 ------
 
-```mariadb
+```mysql
 SELECT DISTINCT 거래처명, 품명, 단가
 FROM `BASIC_DATA`
 WHERE 수량<30;
@@ -164,7 +164,7 @@ WHERE 수량<30;
 
 ------
 
-```mariadb
+```mysql
 SELECT 거래처명, 품명, 단가
 FROM `BASIC_DATA`
 WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
@@ -214,7 +214,7 @@ WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
 
 ### 3. UPDATE
 
-```mariadb
+```mysql
 UPDATE `BASIC_DATA`
 SET 거래처명='폐점', 상품분류='판매중단'
 WHERE 거래처명='나나문구 대치점' AND 상품분류='필기구';
@@ -235,7 +235,7 @@ WHERE 거래처명='나나문구 대치점' AND 상품분류='필기구';
 
 ### 4. DELETE
 
-```mariadb
+```mysql
 DELETE FROM `BASIC_DATA`
 WHERE 품명='네임펜 흑색' OR 품명='보드마카 청색';
 ```
