@@ -63,7 +63,7 @@ WHERE (@idx := 0) = 0
 
 
 
-### Nested Query
+### Nested Query (Sub Query)
 
 ```mysql
 SELECT @idx := @idx + 1 as idx, T.*
@@ -240,5 +240,70 @@ query string을 만들어 실행하는 Dynamic SQL
 SET @selectItem = '*';
 SET @tableName = 'BASIC_DATA'
 EXECUTE IMMEDIATE CONCAT('SELECT ', @selectItem, ' FROM ', @tableName, ';');
+```
+
+
+
+### with절
+
+Sub Query를 With절로 만들어서 테이블을 사용하듯 사용할 수 있다. 특히 여러 번 반복되는 서브쿼리를 With절로 만들어서 사용하면 쿼리의 성능을 높일 수 있다.
+
+```mysql
+/** Sub Query를 이용한 문장 **/
+SELECT a.deptno
+     , b.dname
+     , a.sal
+  FROM ( SELECT deptno
+              , SUM(sal) AS sal
+           FROM emp
+          GROUP BY deptno
+       ) a
+     , dept b
+ WHERE a.deptno = b.deptno
+
+/** With절을 이용한 문장 **/
+WITH emp_w1 AS
+( 
+  SELECT deptno
+       , SUM(sal) AS sal
+    FROM emp
+   GROUP BY deptno
+)
+SELECT a.deptno
+     , b.dname
+     , a.sal
+  FROM emp_w1 a
+     , dept b
+ WHERE a.deptno = b.deptno
+```
+
+```mysql
+/** 다중 With절 **/
+WITH emp_w1 AS
+( 
+  SELECT deptno
+       , AVG(sal) AS sal_avg
+    FROM emp
+   GROUP BY deptno
+), 
+emp_w2 AS 
+(
+  SELECT job
+       , AVG(sal) AS sal_avg
+    FROM emp
+   GROUP BY job
+)
+
+SELECT a.ename
+     , a.job
+     , a.sal
+     , b.sal_avg AS dept_avg
+     , c.sal_avg AS job_avg
+  FROM emp a
+     , emp_w1 b
+     , emp_w2 c
+ WHERE a.empno = 7788
+   AND a.deptno = b.deptno
+   AND a.job = c.job
 ```
 
