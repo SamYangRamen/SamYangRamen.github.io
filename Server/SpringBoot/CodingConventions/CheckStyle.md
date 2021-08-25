@@ -74,7 +74,7 @@ https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resource
 
 
 
-#### 5. google_checks.xml에서 불필요하다고 생각되는 부분을 주석처리하여 제거
+#### 5. google_checks.xml의 내용 중 필요에 맞게 수정
 
 
 
@@ -120,6 +120,77 @@ https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.45.1/che
 
 
 
-#### 3. 명령어 수행으로 CheckStyle이 정상적으로 수행되는지 확인
+#### 3. .jar 파일을 프로젝트 내부로 이동
+
+어디든지 상관없음. 나는 /[프로젝트경로]/config/checkstyle/checkstyle-8.45.1-custom.jar 가 되도록 이동시킴
+
+
+
+#### 4. 명령어 수행으로 CheckStyle이 정상적으로 수행되는지 확인
 
 ```java -jar /[.jar 파일이 존재하는 경로]/[.jar 파일명].jar -c /google_checks.xml ../*```
+
+```java -jar ../config/checkstyle/checkstyle-8.45.1-custom.jar -c /google_checks.xml ../*```
+
+
+
+#### 5. build.gradle 파일 안에 아래와 같이 내용 작성
+
+```js
+plugins {
+	// 다른 플러그인들
+	id 'checkstyle'
+}
+
+checkstyle {
+	toolVersion = '8.45' // checkStyle 버전은 File -> Settings -> Tools -> Checkstyle에서 확인 가능
+	configFile = file("${rootDir}/config/checkstyle/google_checks.xml")
+}
+
+checkstyleMain() {
+
+}
+```
+
+
+
+#### 6. ```./gradlew build``` 명령어 수행
+
+정상적으로 빌드되는지 확인
+
+
+
+#### 7. 프로젝트의 ```.git/hooks/pre-commit``` 파일의 내용을 아래와 같이 수정
+
+정상 build 여부 (정상적으로 실행되는가) 및 정상 style check 여부 (checkStyle 코딩 컨벤션에 맞게 작성이 되었는가) 모두 확인하여, 둘 다 만족하면 commit이 되는 쉘 스크립트를 아래와 같이 작성하였음
+
+```shell
+#!/usr/bin/bash
+
+buildResult=`./gradlew build`
+
+if [[ "$buildResult" =~ ":compileJava FAILED" ]]; then
+	echo "Build Failed."
+	echo "commit aborted."
+	exit -1
+else
+	echo "Build Success."
+fi
+
+checkStyleResult=$(java -jar "`pwd`/config/checkstyle/checkstyle-8.45.1-custom.jar" -c /google_checks.xml `pwd`/src/)
+
+if [[ "$checkStyleResult" =~ "[WARN]" ]]; then
+	echo "Compile Failed."
+	echo "commit aborted."
+	exit -1
+else
+	echo "Compile Success."
+	
+fi
+
+echo "commit Success."
+```
+
+
+
+#### 8. ```git commit```으로 commit이 되는지 확인
