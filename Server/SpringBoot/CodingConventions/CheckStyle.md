@@ -180,11 +180,11 @@ fi
 checkStyleResult=$(java -jar "`pwd`/config/checkstyle/checkstyle-8.45.1-custom.jar" -c /google_checks.xml `pwd`/src/)
 
 if [[ "$checkStyleResult" =~ "[WARN]" ]]; then
-	echo "Compile Failed."
+	echo "CheckStyle Failed."
 	echo "commit aborted."
 	exit -1
 else
-	echo "Compile Success."
+	echo "CheckStyle Success."
 	
 fi
 
