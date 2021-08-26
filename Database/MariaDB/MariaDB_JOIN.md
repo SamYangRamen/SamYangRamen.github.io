@@ -224,3 +224,69 @@ FROM STD_NAME A
 |    3 | 다다다 |   \N | \N   |
 |   \N | \N     |    4 | A    |
 |   \N | \N     |    5 | C    |
+
+
+
+------
+
+
+
+### 정해진 ID 범위 내에서 모든 데이터를 편하게 보기 위한 방법
+
+```mysql
+SELECT *
+FROM
+(
+	WITH RECURSIVE CTE AS
+	(
+		SELECT 1 AS ID
+		UNION ALL
+		SELECT ID + 1 FROM CTE WHERE ID < 10
+	) SELECT * FROM CTE
+) AS T
+LEFT JOIN STD_NAME A ON T.ID=A.ID
+LEFT JOIN STD_GRADE B ON T.ID=B.ID
+;
+```
+
+|   ID |   ID | NAME   |   ID | GRADE |
+| ---: | ---: | ------ | ---: | ----- |
+|    1 |    1 | 가가가 |    1 | A     |
+|    2 |    2 | 나나나 |    2 | B     |
+|    3 |    3 | 다다다 |   \N | \N    |
+|    4 |   \N | \N     |    4 | A     |
+|    5 |   \N | \N     |    5 | C     |
+|    6 |   \N | \N     |   \N | \N    |
+|    7 |   \N | \N     |   \N | \N    |
+|    8 |   \N | \N     |   \N | \N    |
+|    9 |   \N | \N     |   \N | \N    |
+|   10 |   \N | \N     |   \N | \N    |
+
+```mysql
+SELECT T.ID, A.NAME, B.GRADE
+FROM
+(
+	WITH RECURSIVE CTE AS
+	(
+		SELECT 1 AS ID
+		UNION ALL
+		SELECT ID + 1 FROM CTE WHERE ID < 10
+	) SELECT * FROM CTE
+) AS T
+LEFT JOIN STD_NAME A ON T.ID=A.ID
+LEFT JOIN STD_GRADE B ON T.ID=B.ID
+;
+```
+
+|   ID | NAME   | GRADE |
+| ---: | ------ | ----- |
+|    1 | 가가가 | A     |
+|    2 | 나나나 | B     |
+|    3 | 다다다 | \N    |
+|    4 | \N     | A     |
+|    5 | \N     | C     |
+|    6 | \N     | \N    |
+|    7 | \N     | \N    |
+|    8 | \N     | \N    |
+|    9 | \N     | \N    |
+|   10 | \N     | \N    |
