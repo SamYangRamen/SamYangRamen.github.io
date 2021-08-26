@@ -154,27 +154,27 @@ checkstyleMain() {
 
 
 
-#### 6. ```./gradlew build``` 명령어 수행
+#### 6. ```./gradlew test``` 명령어 수행
 
-정상적으로 빌드되는지 확인
+정상적으로 테스트되는지 확인
 
 
 
 #### 7. 프로젝트의 ```.git/hooks/pre-commit``` 파일의 내용을 아래와 같이 수정
 
-정상 build 여부 (정상적으로 실행되는가) 및 정상 style check 여부 (checkStyle 코딩 컨벤션에 맞게 작성이 되었는가) 모두 확인하여, 둘 다 만족하면 commit이 되는 쉘 스크립트를 아래와 같이 작성하였음
+정상 test 여부 (정상적으로 실행되는가) 및 정상 style check 여부 (checkStyle 코딩 컨벤션에 맞게 작성이 되었는가) 모두 확인하여, 둘 다 만족하면 commit이 되는 쉘 스크립트를 아래와 같이 작성하였음
 
 ```shell
 #!/usr/bin/bash
 
-buildResult=`./gradlew test`
+testResult=`./gradlew test`
 
-if [[ "$buildResult" =~ ":compileJava FAILED" ]]; then
-	echo "Build Failed."
+if [[ "$testResult" =~ ":compileJava FAILED" ]]; then
+	echo "Test Failed."
 	echo "commit aborted."
 	exit -1
 else
-	echo "Build Success."
+	echo "Test Success."
 fi
 
 checkStyleResult=$(java -jar "`pwd`/config/checkstyle/checkstyle-8.45.1-custom.jar" -c /google_checks.xml `pwd`/src/)
