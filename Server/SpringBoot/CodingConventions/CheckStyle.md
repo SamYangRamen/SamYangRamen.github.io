@@ -167,7 +167,7 @@ checkstyleMain() {
 ```shell
 #!/usr/bin/bash
 
-buildResult=`./gradlew build`
+buildResult=`./gradlew test`
 
 if [[ "$buildResult" =~ ":compileJava FAILED" ]]; then
 	echo "Build Failed."
