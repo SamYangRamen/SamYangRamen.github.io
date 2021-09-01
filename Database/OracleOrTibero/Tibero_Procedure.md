@@ -115,11 +115,11 @@ myString := 'Hello, world!';
   	total NUMBER := 0;
   BEGIN
   ...
-  	SELECT SUM(단가)
-      INTO total
-      FROM BASIC_DATA;
+    SELECT SUM(단가)
+    INTO total
+    FROM BASIC_DATA;
   
-      dbms_output.put_line(total);
+    dbms_output.put_line(total);
   ...
   END;
   ```
