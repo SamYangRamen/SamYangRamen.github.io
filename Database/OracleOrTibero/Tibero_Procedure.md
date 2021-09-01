@@ -66,6 +66,12 @@ DROP PROCEDURE FOO_PROCEDURE;
   	/* 기능 정의, 필수 */
   EXCEPTION
   	/* 예외 처리, 선택 */
+  	WHEN NO_DATA_FOUND THEN
+  		/* sentences */
+  	WHEN ...
+  		/* sentences */
+  	WHEN OTHERS THEN
+  		/* sentences */
   END;
   	/* 종료, 필수 */
   ```
@@ -105,17 +111,7 @@ myString := 'Hello, world!';
 - 이때, SELECT 결과는 반드시 한 Column의 한 Row, 즉 단 하나의 값이어야만 한다.
 
   ```sql
-  IS
-  	total NUMBER := 0;
-  BEGIN
-  ...
-  	SELECT SUM(단가)
-      INTO total
-      FROM BASIC_DATA;
-  
-      dbms_output.put_line(total);
-  ...
-  END;
+  IS	total NUMBER := 0;BEGIN...	SELECT SUM(단가)    INTO total    FROM BASIC_DATA;    dbms_output.put_line(total);...END;
   ```
 
   ```sql
@@ -125,25 +121,13 @@ myString := 'Hello, world!';
 - 또한, SELECT 결과가 존재하지 않아서 INTO 옆의 변수 안에 들어갈 값이 없다면, 에러 메시지를 띄우면서 컴파일이 되지 않는다. 따라서 아래와 같이 BEGIN-EXCEPTION-END로 감싸서 작성해야 한다.
 
   ```sql
-  ...
-  	BEGIN
-  		SELECT 단가
-  		INTO myValue
-  		FROM BASIC_DATA
-  		WHERE 단가 > 1000000;
-  	EXCEPTION
-  		WHEN NO_DATA_FOUND THEN
-  			/* sentences */
-  	END;
-  ...
+  ...	BEGIN		SELECT 단가		INTO myValue		FROM BASIC_DATA		WHERE 단가 > 1000000;	EXCEPTION		WHEN NO_DATA_FOUND THEN			/* sentences */	END;...
   ```
 
 - 단지 변수에 어떤 값만을 입력하는 용도로 사용할 수도 있다. 단, Oracle/Tibero는 FROM절이 없을 경우 SELECT문이 실행되지 않기 때문에, `DUAL`이라는 Dummy Table을 이용해서 입력해야 한다.
 
   ```sql
-  SELECT 123
-  INTO result
-  FROM DUAL;
+  SELECT 123INTO resultFROM DUAL;
   ```
 
   
@@ -151,17 +135,11 @@ myString := 'Hello, world!';
 ### if-else
 
 ```sql
-if (/* 조건문 */) then
-	/* sentences */
-END if;
+if (/* 조건문 */) then	/* sentences */END if;
 ```
 
 ```sql
-if (/* 조건문 */) then
-	/* sentences */
-ELSE
-	/* sentences */
-END if;
+if (/* 조건문 */) then	/* sentences */ELSE	/* sentences */END if;
 ```
 
 
@@ -169,9 +147,7 @@ END if;
 ### while
 
 ```sql
-while (/* 조건문 */) LOOP
-	/* sentences */
-END LOOP;
+while (/* 조건문 */) LOOP	/* sentences */END LOOP;
 ```
 
 
@@ -179,9 +155,6 @@ END LOOP;
 ### loop
 
 ```sql
-LOOP
-EXIT WHEN /* 조건문 */;
-	/* sentences */
-END LOOP;
+LOOPEXIT WHEN /* 조건문 */;	/* sentences */END LOOP;
 ```
 
