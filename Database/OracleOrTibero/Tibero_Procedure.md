@@ -70,7 +70,23 @@ DROP PROCEDURE FOO_PROCEDURE;
   	/* 종료, 필수 */
   ```
 
+#### 변수 선언 방법
 
+- 스칼라 변수 : 원래 하던 방법
+
+  ```sql
+  VEMPNO NUMBER(4);
+  VENAME VARCHAR2(10);
+  ```
+
+- 레퍼런스 변수 : 이전에 선언된 다른 변수나 DB 컬럼에 맞춰서 변수를 선언하는 방법
+
+  ```
+  TEMPNO VEMPNO%TYPE;
+  TEMPNAME EMP.ENAME%TYPE;
+  ```
+
+  
 
 ### 변수 입력
 
@@ -122,6 +138,14 @@ myString := 'Hello, world!';
   ...
   ```
 
+- 단지 변수에 어떤 값만을 입력하는 용도로 사용할 수도 있다. 단, Oracle/Tibero는 FROM절이 없을 경우 SELECT문이 실행되지 않기 때문에, `DUAL`이라는 Dummy Table을 이용해서 입력해야 한다.
+
+  ```sql
+  SELECT 123
+  INTO result
+  FROM DUAL;
+  ```
+
   
 
 ### if-else
@@ -146,7 +170,18 @@ END if;
 
 ```sql
 while (/* 조건문 */) LOOP
-	# sentences
+	/* sentences */
+END LOOP;
+```
+
+
+
+### loop
+
+```sql
+LOOP
+EXIT WHEN /* 조건문 */;
+	/* sentences */
 END LOOP;
 ```
 
