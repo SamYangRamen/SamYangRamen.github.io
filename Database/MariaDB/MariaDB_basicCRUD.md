@@ -1,4 +1,4 @@
-# CRUD
+# CRUD in MariaDB
 
 CREATE READ UPDATE DELETE의 약자.
 
