@@ -41,7 +41,7 @@
 - 또한, `ROWNUM`을 변경하기 위해 DML(`SELECT`, `INSERT`, `UPDATE`, `DELETE`)을 사용할 수 없다.
 - `ROWNUM`은 `ORDER BY` 전에 부여되며, `ORDER BY`는 맨 나중에 실행된다.
 - 주로 <, <= 를 사용하며, >, >= 인 경우 `ROWNUM`은 동작하지 않는다.
-- 등호를 사용하는 경우,`ROWNUM = 1` 은 사용 가능하지만 `ROWNUM = 2`인 경우는 데이터가 추출되지 않는다. 
+- (단일 Query에서) 등호를 사용하는 경우,`ROWNUM = 1` 은 사용 가능하지만 `ROWNUM = 2`인 경우는 데이터가 추출되지 않는다. 
   - https://m.blog.naver.com/roropoly1/221219162711
 
 ```sql
@@ -66,6 +66,24 @@ SELECT ROWNUM, T.* FROM BASIC_DATA T WHERE ROWNUM <= 4 ORDER BY 단가;
 | 4      | 가양 아트박스 | 네임펜 흑색     | 기타     | 10   | 6000  |
 | 2      | 가양 아트박스 | A4용지          | 복사용지 | 30   | 20000 |
 
+#### ROWNUM으로 특정 행을 뽑아내는 방법
+
+- 아래와 같이 Nested Query를 이용하면 `ROWNUM`으로 특정 행을 뽑아낼 수 있다.
+
+```sql
+SELECT R.*
+FROM
+(
+  SELECT ROWNUM AS NUM, T.*
+  FROM SC_PIVOT_TESTDATA T
+) R
+WHERE R.NUM=3;
+```
+
+| ROWNUM | 거래처명      | 품명        | 상품분류 | 수량 | 단가 |
+| ------ | ------------- | ----------- | -------- | ---- | ---- |
+| 3      | 가양 아트박스 | 모나미 볼펜 | 필기구   | 250  | 100  |
+
 
 
 ### SELECT
@@ -82,7 +100,71 @@ SELECT ROWNUM, T.* FROM BASIC_DATA T WHERE ROWNUM <= 4 ORDER BY 단가;
   | ------ |
   | 12345  |
 
-  
+- COLUMN명을 SELECT하고자 할 때
+
+  ```sql
+  SELECT COLUMN_NAME
+  FROM ALL_TAB_COLUMNS
+  WHERE TABLE_NAME = /* 테이블명 */;
+  ```
+
+  ```sql
+  -- 예제
+  SELECT COLUMN_NAME
+  FROM ALL_TAB_COLUMNS
+  WHERE TABLE_NAME = BASIC_DATA;
+  ```
+
+  | COLUMN_NAME |
+  | ----------- |
+  | 거래처명    |
+  | 품명        |
+  | 상품분류    |
+  | 수량        |
+  | 단가        |
+
+- 특정 순서의 행에 있는 COLUMN명을 SELECT하고자 할 때
+
+  ```sql
+  SELECT R.COLUMN_NAME
+  FROM
+  (
+  	SELECT ROWNUM AS NUM, COLUMN_NAME
+  	FROM ALL_TAB_COLUMNS
+  	WHERE TABLE_NAME = 'SC_PIVOT_TESTDATA'
+  ) R
+  WHERE R.NUM=2
+  ;
+  ```
+
+  | COLUMN_NAME |
+  | ----------- |
+  | 품명        |
+
+- `NVL([컬럼명], [NULL일 경우 반환값])` : SELECT 결과가 NULL인 부분은 특정 값으로 치환해서 반환
+
+  ```
+  SELECT NVL(D, 1234)
+  FROM
+  (
+    SELECT 'ABC' AS D FROM DUAL
+    UNION ALL
+    SELECT NULL FROM DUAL
+    UNION ALL
+    SELECT 'GHI' FROM DUAL
+  )
+  ;
+  ```
+
+  | NVL(D, 1234) |
+  | ------------ |
+  | ABC          |
+  | 1234         |
+  | GHI          |
+
+- `NVL2([컬럼명], [NULL이 아닐 경우 반환값], [NULL일 경우 반환값])` : SELECT 결과가 NULL이 아닌 경우도 특정 값으로 치환해서 반환
+
+
 
 ### 주석
 
@@ -116,6 +198,18 @@ SELECT ROWNUM, T.* FROM BASIC_DATA T WHERE ROWNUM <= 4 ORDER BY 단가;
   ABCDE1234 -- 실행 결과
   ```
 
+  - 단, 연산자를 포함하면 오류가 발생한다. 따라서 `TO_CHAR()` 메서드를 사용해야 한다.
+
+    ```sql
+    DECLARE
+      myString VARCHAR(50);
+      myNum INTEGER := 0;
+    BEGIN
+      myString := 'ABC' || myNum+12 || 34 || 'DE';	-- 불가능한 문장
+      myString := 'ABC' || TO_CHAR(myNum+12) || 34 || 'DE';	-- 가능한 문장
+    END;
+    ```
+
 - `CONCAT()` 메서드로 이어 붙인다.
 
   - MariaDB와는 다르게, 아래와 같이 3개 이상의 값을 Argument로 입력할 수 없다.
@@ -130,6 +224,36 @@ SELECT ROWNUM, T.* FROM BASIC_DATA T WHERE ROWNUM <= 4 ORDER BY 단가;
     myString := CONCAT('ABC', 123);	-- 가능한 문장
     myString := CONCAT('ABC', CONCAT('DEF', CONCAT(123, 'GHI')));	-- 가능한 문장
     ```
+
+#### Column 추출 문자열 생성
+
+- `WM_CONCAT([컬럼명])` : 해당 Column에 속한 Row들을 `,`으로 이어붙인 문자열을 반환
+
+  ```sql
+  SELECT WM_CONCAT(DISTINCT 거래처명) AS 거래처명
+  FROM SC_PIVOT_TESTDATA;
+  ```
+
+  | 거래처명                                        |
+  | ----------------------------------------------- |
+  | 가양 아트박스, 나나문구 서현점, 나나문구 대치점 |
+
+- `LISTAGG([컬럼명], [구분자]) WITHIN GROUP (ORDER BY [컬럼명]) `
+  : 해당 Column에 속한 Row들을 정렬한 뒤, 구분자로 이어붙인 문자열을 반환
+
+  ```sql
+  SELECT LISTAGG(거래처명, ', ') WITHIN GROUP (ORDER BY 거래처명 DESC) AS 거래처명
+  FROM
+  (
+    SELECT DISTINCT 거래처명
+    FROM SC_PIVOT_TESTDATA
+  )
+  ;
+  ```
+
+  | 거래처명                                        |
+  | ----------------------------------------------- |
+  | 나나문구 서현점, 나나문구 대치점, 가양 아트박스 |
 
 #### 자료형 변환
 
@@ -192,7 +316,7 @@ SELECT ROWNUM, T.* FROM BASIC_DATA T WHERE ROWNUM <= 4 ORDER BY 단가;
   | ---- | ---- | ---- | ---- |
   | 3    | 9    | 12   | 15   |
 
-  
+
 
 
 
