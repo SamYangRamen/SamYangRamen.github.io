@@ -51,6 +51,8 @@
 
 ![image](https://user-images.githubusercontent.com/53200166/132650631-f329febc-0df4-47f8-9945-a7bf1169854e.png)
 
+※ 1번부터 8번까지의 항목을 읽지 않고 알아두어야 할 사항 부분만 읽어도 충분함
+
 1. Client로부터 요청이 들어오면 `DispatcherServlet`이 호출된다.
 2. `DispatcherServlet`은 받은 요청을 `HandlerMapping`에게 던져준다. 요청받은 URL을 분석하여 `HandlerMapping`에 적합한 `Controller`를 선택하여 반환한다.
 3. `DispatcherServlet`는 다음으로 `HandlerAdapter`를 호출한다. `HandlerApdater`는 해당하는 `Controller` 중 요청한 URL에 맞는 적합한 Method를 찾아준다.
@@ -72,6 +74,8 @@
 #### 의존성(Dependency)이란?
 
 의존성이 무슨 뜻이냐면, 그냥 **한 객체에서 다른 객체를 가져다 쓰면 의존성이 생긴다**고 표현한다.
+
+(즉 build.gradle 파일의 dependencies를 명시하는 것은, 개발 중인 클래스에서 다른 어떤 라이브러리가 필요하다고 판단될 때 바로 가져다 쓸 수 있도록 해당 라이브러리를 프로젝트에 등록하는 것이다.)
 
 클래스 간에 의존 관계가 있다는 것은 한 클래스가 바뀔 때 다른 클래스가 영향을 받는다는 것을 뜻한다. 즉, **한 클래스를 수정하였을 때, 다른 클래스도 수정해야 하는 상황이 발생**한다. 따라서, 코드에 변경이 있을 경우 해당 변경에 의존성을 갖는 코드 중에 수정을 하지 않은 곳이 하나라도 있다면 오류를 발생시킬 것이기 때문에 코드의 품질과 안정성이 떨어진다.
 
@@ -100,7 +104,7 @@ public class B {
 
 #### IoC를 적용하는 과정 - 소스 코드를 중심으로 우선 훑어보기
 
-위와 같은 문제를 해결하는 방법은, 쉽게 말해 필요한 객체를 (`new` 키워드를 사용하는 등) 직접 생성하지 말고 외부에서 생성해서 가져오도록 하는 것이다.
+위와 같은 문제를 해결하는 방법은 다음과 같다. 먼저, 필요한 객체를 (`new` 키워드를 사용하는 등) 직접 생성하지 말고 외부에서 생성해서 가져오도록 해야 한다.
 
 ```java
 public class Store {
@@ -248,7 +252,7 @@ public class Eraser implements Product {
 
 개발자가 작성한 코드는 컨테이너를 사용하게 됨으로써 개발자의 손을 떠나 컨테이너의 영역으로 떠나버리게 된다. 정확히 말하자면, 컨테이너가 맘대로 객체를 생성하는게 아니라, 프로그램을 이용하는 이용자의 호출이 있을 때 비로소 컨테이너가 동작하여 이용자가 필요로 하는 객체를 생성하여 가져다주는 구조이다.
 
-Spring에는 위와 같이 객체를 관리하는 컨테이너가 존재하는데, 바로 `ApplicationContext`이다. 즉, 클래스에 `@Component`가 붙으면 `ApplicationContext`에 해당 클래스를 등록하는 것이고, 생성자에 `@Autowired`가 붙으면 앞서 등록되었던 클래스의 객체를 생성하여 해당 생성자의 파라미터에 주입하는 것이다.
+Spring에는 위와 같이 객체를 관리하는 컨테이너가 존재하는데, 바로 `ApplicationContext`이다. 즉, 클래스에 `@Component`가 붙으면 **Spring 컨테이너**인 `ApplicationContext`에 해당 클래스를 등록하는 것이고, 생성자에 `@Autowired`가 붙으면 앞서 등록되었던 클래스의 객체를 생성하여 해당 생성자의 파라미터에 주입하는 것이다.
 
 예전에는 `ApplicationContext`를 개발자가 직접 다룸으로써 컨테이너 설정을 해줘야 했지만, 현재는 Spring Framework의 `DispatcherServlet`이 자체적으로 `ApplicationContext`를 생성하고 사용하기 때문에, 개발자가 신경쓸 필요가 없다.
 
@@ -265,6 +269,8 @@ Spring에는 위와 같이 객체를 관리하는 컨테이너가 존재하는�
 다시 말해, 개발자는 필요한 부품을 만들어 조립하는 방식의 개발을 하게 되며, 이렇게 조립된 코드의 생성 및 전달은 개발자에 의해서 제어되는 것이 아닌, 프레임워크의 내부에서 결정된 대로 이루어지게 되는 것을 말한다.
 
 이때, 프레임워크 내부에서 객체의 생성 및 전달을 도맡아 하는 것이 **컨테이너**이고, Spring에서의 컨테이너는 `ApplicationContext`라 하며, `ApplicationContext`에서 관리하는 이러한 객체들을 **Bean**이라고 한다.
+
+즉, 클래스에 `@Component`가 붙으면 Spring 컨테이너에 Bean을 등록하는 것이고, 생성자에 `@Autowired`가 붙으면 앞서 등록되었던 Bean의 객체를 생성하여 해당 생성자의 파라미터에 주입하는 것이다.
 
 
 
@@ -323,40 +329,6 @@ Spring에는 위와 같이 객체를 관리하는 컨테이너가 존재하는�
 이제 어떠한 것에도 의존하지 않는 형태가 되었다. 실행 시점에 클래스 간의 관계가 현성된다. 즉, 의존성이 삽입된다.
 
 ![image](https://user-images.githubusercontent.com/53200166/132811521-6583aad1-c38e-4a60-b3f1-9f66111c0f01.png)
-
-
-
-#### Spring에서의 DI 방식
-
-지금까지 DI의 방식으로 `@Autowired` Annotation을 붙이는 방법 하나로만 설명해왔으나, 사실은 다른 방식들도 존재한다.
-
-- ~~XML 구성 파일을 생성하여 주입하는 방식~~
-
-  - XML 구성 파일을 생성하여 설정 값을 입력하고 기능을 사용하고자 하는 클래스에서 불러 사용하는 방식
-  - XML 구성 파일을 수정하면 자바 코드를 최대한 수정하지 않기 때문에 재컴파일하지 않더라도 변경사항을 쉽게 적용한다.
-  - 모델 클래스, 서버 클래스, XML 설정 파일이 분산되어 있어, 데이터 처리정보를 확인하기 위해서는 3파일 모두 봐야한다는 귀찮음이 있다.
-
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <beans
-  	... 생략
-      >
-      <bean id="userRepository" class="com.example.demo.UserRepositoryImpl" />
-      <bean id="userService" class="com.example.demo.UserServiceImpl">
-      	<constructor-arg ref="userRepository" />
-      </bean>
-  </beans>
-  ```
-
-  위 예시(Application.xml)에서 각각의 Bean을 등록하고, 의존성을 주입받는 클래스에서는 constuctor-arg를 통해 다른 Bean을 주입받는 것을 볼 수 있다.
-
-- **Annotation을 이용하여 주입하는 방식**
-
-  - ~~@Configuration 어노테이션으로 주입하고자 하는 클래스 이름 설정하고, @Bean 어노테이션으로 Bean 객체를 주입한다.~~
-  - 데이터에 대한 유효성을 모델클래스에 직접 명시하기 때문에 컴파일 시 바로 확인이 가능하다.
-  - 자바 클래스로 생성된 구성파일은 컴파일 될 시, 내부적으로 XML 파일 형식으로 변경되어 주입하게 된다.
-
-... 작성중
 
 
 
@@ -434,6 +406,40 @@ public class MemberMemberRepository implements MemberRepository {
 그런데, `@Component` Annotation이 붙어 있는 객체는 Spring 컨테이너에 등록된다.
 
 따라서, `@Component` Annotation을 가지고 있는 `@Controller`, `@Service`, `@Repository`가 붙어있는 객체는 컨테이너에 등록된다.
+
+
+
+#### Spring에서의 DI 방식
+
+지금까지 DI의 방식으로 `@Autowired` Annotation을 붙이는 방법 하나로만 설명해왔으나, 사실은 다른 방식들도 존재한다.
+
+- ~~XML 구성 파일을 생성하여 주입하는 방식~~
+
+  - XML 구성 파일을 생성하여 설정 값을 입력하고 기능을 사용하고자 하는 클래스에서 불러 사용하는 방식
+  - XML 구성 파일을 수정하면 자바 코드를 최대한 수정하지 않기 때문에 재컴파일하지 않더라도 변경사항을 쉽게 적용한다.
+  - 모델 클래스, 서버 클래스, XML 설정 파일이 분산되어 있어, 데이터 처리정보를 확인하기 위해서는 3파일 모두 봐야한다는 귀찮음이 있다.
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans
+  	... 생략
+      >
+      <bean id="userRepository" class="com.example.demo.UserRepositoryImpl" />
+      <bean id="userService" class="com.example.demo.UserServiceImpl">
+      	<constructor-arg ref="userRepository" />
+      </bean>
+  </beans>
+  ```
+
+  위 예시(Application.xml)에서 각각의 Bean을 등록하고, 의존성을 주입받는 클래스에서는 constuctor-arg를 통해 다른 Bean을 주입받는 것을 볼 수 있다.
+
+- **Annotation을 이용하여 주입하는 방식**
+
+  - ~~@Configuration 어노테이션으로 주입하고자 하는 클래스 이름 설정하고, @Bean 어노테이션으로 Bean 객체를 주입한다.~~
+  - 데이터에 대한 유효성을 모델클래스에 직접 명시하기 때문에 컴파일 시 바로 확인이 가능하다.
+  - 자바 클래스로 생성된 구성파일은 컴파일 될 시, 내부적으로 XML 파일 형식으로 변경되어 주입하게 된다.
+
+... 작성중
 
 
 

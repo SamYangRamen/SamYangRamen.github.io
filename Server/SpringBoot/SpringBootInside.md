@@ -1,4 +1,4 @@
-# Spring Boot 개발하기
+# Spring Boot 내부 구조 살펴보기
 
 
 
@@ -98,14 +98,113 @@ test {
 - **group** : 자신의 프로젝트를 식별해주는 고유 ID로, 인터넷 주소를 뒤집어 놓은 형태
 - **version** : 해당 애플리케이션의 버전. 'SNAPSHOT'이 붙으면 아직 개발 단계라는 것을 의미한다.
 - **sourceCompatibility** : 자바 컴파일러 준수 레벨을 디폴트값(현재 사용 중인 JVM의 버전)에서 11로 변경
-
 - **repositories** : gradle이 필요한 라이브러리를 자동으로 다운로드하기 위해 사용하는 저장소
   - 대표적으로 jcenter()와 mavenCentral()이 있다. 이 둘은 gradle의 메서드이다. 최근에는 jcenter()를 주로 사용하는 추세라고 한다.
   - ※ gradle에서 왜 mavenCentral()? maven이랑 다르다며?
     - 빌드 도구는 **Ant** -> **Maven** -> **Gradle** 순으로 생겨났는데, Gradle은 Ant와 Maven같은 기존 빌드 도구의 기능과 시스템을 활용할 수 있다. 이러한 측면에서 MavenCentral()을 사용하는 것이다. 한편, Maven 등을 사용하던 프로젝트는 기존 자원을 최대한 활용하면서 단계적으로 Gradle로 이전할 수도 있다.
-- **dependencies** : 의존성 라이브러리를 정의
+- **dependencies** : 의존성 라이브러리를 정의. 의존성 라이브러리란, 개발 도중 필요할 때 가져다 쓸 라이브러리라고 일단 이해하고 넘어가자.
+  - implementation : 개발할 때에 내가 필요한 라이브러리를 적어 이 라이브러리를 가져와달라고 하는 부분
+  - testImplementation : 테스트 코드를 작성할 때 필요한 라이브러리를 적어 이 라이브러리를 가져와달라고 하는 부분
+  - compileOnly : 컴파일할 때에만 사용되고 런타임 때에는 사용되지 않는 라이브러리
 - **test** :
   - `useJUnitPlatform()` : JUnit Test를 가능하게 해주는 메서드
 
 
+
+### 의존성 라이브러리 종류
+
+#### Lombok
+
+Annotation 기반으로 Java에서 자주 사용되는 코드를 자동완성 해주는 라이브러리
+
+- **@Getter/@Setter** : 필드값에 대한 `get`, `set` 메서드가 자동으로 생성됨
+
+  - `get`, `set` 메서드를 직접 명시한 클래스 (Lombok X)
+
+    ```java
+    public class Book {
+        private String name;
+        private int price;
+        private String releaseDate;
+    
+        public String getName() {
+            return name;
+        }
+    
+        public void setName(String name) {
+            this.name = name;
+        }
+    
+        public int getPrice() {
+            return price;
+        }
+    
+        public void setPrice(int price) {
+            this.price = price;
+        }
+    
+        public String getReleaseDate() {
+            return releaseDate;
+        }
+    
+        public void setReleaseDate(String releaseDate) {
+            this.releaseDate = releaseDate;
+        }
+    }
+    ```
+
+  - Lombok의 `@Getter`, `@Setter`를 사용한 클래스
+
+    ```java
+    @Getter
+    @Setter
+    public class Book {
+        private String name;
+        private int price;
+        private String releaseDate;
+    }
+    ```
+
+- **@NoArgsConstructor/@AllArgsConstuctor** : Argument가 없는 기본 생성자/Argument에 필드를 모두 포함한 생성자가 자동으로 생성됨
+
+  - 기본 생성자와, 모든 필드값을 받는 생성자를 직접 명시한 클래스 (Lombok X)
+
+    ```java
+    public class Book {
+        private String name;
+        private int price;
+        private String releaseDate;
+    
+        public Book() {
+        }
+    
+        public Book(String name, int price, String releaseDate) {
+            this.name = name;
+            this.price = price;
+            this.releaseDate = releaseDate;
+        }
+    }
+    ```
+
+  - 롬복의 `@NoArgsConstructor`, `@AllArgsConstructor`를 사용한 클래스
+
+    ```java
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class Book {
+        private String name;
+        private int price;
+        private String releaseDate;
+    }
+    ```
+
+- **@Data** : 여러 Annotation의 조합. 즉, `@data` 하나를 명시하는 것은 Lombok에 소속되어 있는 `@Getter`, `@Setter`, `@NoArgsConstructor`, `@AllArgsConstructor`, ... 를 한번에 명시하는 것과 같은 효과를 가진다.
+
+- 그 외에도 여러가지 Annotation 및 기능이 존재함
+
+
+
+#### JDBC
+
+자바 프로그램을 데이터베이스에 연결하기 위한 라이브러리
 
