@@ -177,6 +177,75 @@ bbbbbbbbb
 
 
 
+### Google Presentation
+
+
+
+#### 테스트 1
+
+빈 슬라이드의 왼쪽 상단 끝부분에 텍스트 상자를 두고, 숫자 1부터 9, 알파벳 a부터 n까지 키보드 키를 꾹 눌러서 슬라이드 안을 꽉 채우는 행위를 20분 넘게 반복한 결과
+
+![image](https://user-images.githubusercontent.com/53200166/135023220-b44ff6ba-92ec-46c0-a768-b0181d0e0b62.png)
+
+위와 같이 5분에 한 번씩 버전 기록이 저장이 되는 것을 확인하였음
+
+
+
+#### 테스트 2
+
+약 26분 동안 1분마다 텍스트 상자에 시간을 기록하였음
+
+![image](https://user-images.githubusercontent.com/53200166/135028822-4a77e6f0-105b-4aed-8b32-aed7da9c59ef.png)
+
+위와 같이 1분에 한 번씩 버전 기록이 저장이 되는 것을 확인하였음
+
+
+
+#### 테스트 3
+
+a 계정과 b 계정으로 각각 a를 입력하고 b를 입력하는 행위를 아래와 같이 반복하였음
+
+```
+aaaa
+bbbb
+aaaa
+bbbb
+```
+
+이때, 아래와 같이 수정 내역이 표시되는 것을 확인하였음. 단, 계정별로 각각의 수정 내역이 표시되지는 않았음.
+
+![image](https://user-images.githubusercontent.com/53200166/135029304-c5deaef0-319c-4c2b-b774-c7b4cb7c4212.png)
+
+한편, MS365에서는
+
+```
+aaaa
+bbbb
+aaaa
+bbbb
+```
+
+위 상황에서는 b 계정의 편집이 마지막으로 수행되었으므로, a 계정으로 Undo를 시도하면 수행되지 않았음.
+
+하지만 Google Presentation에서는
+
+````
+aaaa
+bbbb
+bbbb
+````
+
+b 계정의 편집 내역은 그대로 두고, a 계정의 편집 내역 중 일정 부분에 대하여 Undo를 수행하는 것을 확인하였음. 위 상태에서 a 계정에 대하여 Undo를 한 번 더 수행하면
+
+````
+bbbb
+bbbb
+````
+
+위와 같이 수정됨.
+
+
+
 ------
 
 
@@ -327,7 +396,7 @@ bbbb
 하지만 Google Document에서는
 
 ````
-aaaa
+aaaag
 bbbb
 bbbb
 ````
