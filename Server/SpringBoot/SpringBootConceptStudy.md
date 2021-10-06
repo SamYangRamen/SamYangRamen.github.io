@@ -541,6 +541,8 @@ AOP는 그렇게 하지 않고 여기저기에서 사용되는 중복되는(위 
 
 이때, 이 공통된 부분(부가 기능)을 **Advice**, 이 공통된 부분들의 집합을 **Aspect**라고 한다.
 
+AOP는 디자인 패턴 중 프록시 패턴을 기반으로 한다.
+
 
 
 ### 예제를 보기 전, 알아두어야 할 AOP 관련 용어들
@@ -675,6 +677,7 @@ public class TimeCheckAspect {
 ### Pointcut 설정 방법
 
 - **Pointcut의 기본 형식** : `"execution([접근제한자] [리턴타입] [경로].[클래스명].[메서드명]([파라미터명]))"`
+
   - Pointcut 지정자로는 여러 종류가 있는데, `execution()`을 가장 많이 사용한다.
     - `execution()` : 접근제한자, 리턴타입, 클래스/인터페이스, 메서드명, 파라미터타입 등을 전부 조합할 수 있는 가장 세심한 지정자
     - `within()` : execution 지정자에서 클래스/인터페이스까지만 적용된 경우. 즉, 적용된 클래스/인터페이스에 속한 모든 메서드가 Pointcut이 된다.
@@ -773,31 +776,19 @@ public class TimeCheckAspect {
   - `@Around`를 사용하는 경우
 
     ```java
-    @Around("[Pointcut]")
-    public Object [메서드명](ProceedingJoinPoint [변수명1]) throws Throwable {
-        ...	// 타겟의 실행 전에 수행할 작업
-        Object [변수명2] = [변수명1].proceed();	// 타겟의 실행
-        ...	// 타겟의 실행 후에 수행할 작업
-        return [변수명2];
-    }
+    @Around("[Pointcut]")public Object [메서드명](ProceedingJoinPoint [변수명1]) throws Throwable {    ...	// 타겟의 실행 전에 수행할 작업    Object [변수명2] = [변수명1].proceed();	// 타겟의 실행    ...	// 타겟의 실행 후에 수행할 작업    return [변수명2];}
     ```
 
   - `@Before`, `@After`를 사용하는 경우
 
     ```java
-    @Before("[Pointcut]")
-    public void [메서드명](JoinPoint [변수명]) {
-        ...
-    }
+    @Before("[Pointcut]")public void [메서드명](JoinPoint [변수명]) {    ...}
     ```
 
   - `@AfterReturning`을 사용하는 경우
 
     ```java
-    @AfterReturning(pointcut="[Pointcut]", returning=["[타겟의반환값을받는변수명]")
-    public void [메서드명](JoinPoint [변수명], [타겟의반환값의자료형] [타겟의반환값을받는변수명]) {
-        ...
-    }
+    @AfterReturning(pointcut="[Pointcut]", returning=["[타겟의반환값을받는변수명]")public void [메서드명](JoinPoint [변수명], [타겟의반환값의자료형] [타겟의반환값을받는변수명]) {    ...}
     ```
 
     ```java
@@ -825,7 +816,26 @@ public class TimeCheckAspect {
 
     
 
-### AOP의 원리
+### AOP 구현 방법 비교
+
+- java proxy, cglib, aspectJ
+
+#### Java proxy (InvocationHandler)
+
+- `런타임`시에 Target method가 호출될 때 Advice(프록시 할 기능)을 적용
+- JDK Proxy는 `인터페이스`에 대한 Proxy만을 지원
+- 리플렉션을 사용하여 구현한 기술이기에 상대적으로 퍼포먼스가 떨어짐
+
+#### CGLIB (MethodInterceptor)
+
+- CGLIB(Code Generator Library) - 코드 생성 라이브러리
+- java proxy와 동일하게 `런타임`시에 Advice 적용
+- `클래스`에 대한 Proxy가 가능
+- 메서드가 처음 호출 되었을때 동적으로 bytecode를 생성하여 이후 호출에서는 재사용
+
+#### AspectJ
+
+- Runtime이 아닌 `Compile` 시점에 Aspect를 적용
 
 ...작성 중
 
