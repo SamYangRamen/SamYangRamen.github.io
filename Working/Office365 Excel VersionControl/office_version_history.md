@@ -16,13 +16,25 @@
 
 #### 2-1-1. 동시편집 Undo/Redo 테스트
 
+##### 2-1-1-1. 테스트 1 - 도형 및 슬라이드
+
+(**'2-2-1-1. 테스트 1 - 도형 및 슬라이드'와 내용이 동일함**)
+
+
+
+##### 2-1-1-2. 테스트 2 - 텍스트 상자
+
+(**'3-1-1. 동시편집 Undo/Redo 테스트'와 내용이 동일함**)
+
 
 
 #### 2-1-2. 시간 기록 테스트
 
 ##### 2-1-2-1. 테스트 1 - 복원 시 버전 기록 양상
 
+![image](https://user-images.githubusercontent.com/53200166/136148931-395ecc28-03d9-4e56-a9a2-37ab38a8f2cc.png)
 
+![image](https://user-images.githubusercontent.com/53200166/136148955-cb564ffe-3cca-496e-b124-1100cd499d7b.png)
 
 
 
@@ -121,11 +133,11 @@ bYugBwWBXrREyyaBYAIfxfBxYtIegdCdVidsngfNKmp
 
 #### 2-2-1. 동시편집 Undo/Redo 테스트
 
-##### 2-2-2-1. 테스트 1 - 도형 및 슬라이드
+##### 2-2-1-1. 테스트 1 - 도형 및 슬라이드
 
 계정 A로 사각형 생성 -> 계정 B로 원 생성 -> ... 을 반복 수행하여 아래와 같은 상태(**상태 1**) 만들었음
 
-![image-20211006140358501](/home/seongbo_kim@tmax.co.kr/.config/Typora/typora-user-images/image-20211006140358501.png)
+![image](https://user-images.githubusercontent.com/53200166/136145929-7d09d9eb-1d03-4940-a20e-119e0369c80a.png)
 
 상태 1에서 계정 A로 Undo를 반복 수행하면 아래와 같은 결과가 나옴
 
@@ -159,13 +171,15 @@ bYugBwWBXrREyyaBYAIfxfBxYtIegdCdVidsngfNKmp
   -> 계정 B로 빈 슬라이드 2에서 도형 생성 또는 텍스트 입력 등 편집 수행
   -> 계정 A로 Undo를 수행
 
-하면, 계정 B가 슬라이드 2에 어떤 편집을 수행했든 상관없이 슬라이드 2를 최초로 생성한 주체는 계정 A이므로 Undo가 정상적으로 수행되는 것을 알 수 있었음. 즉, **슬라이드가 오브젝트보다 Undo/Redo 우선순위가 높음**.
+![image](https://user-images.githubusercontent.com/53200166/136146467-1b0425fe-ccb1-4d79-9807-0c88005d3375.png)
+
+즉 위 스크린샷인 상태에서 계정 A로 Undo를 수행하면, 계정 B가 슬라이드 2에 어떤 편집을 수행했든 상관없이 슬라이드 2를 최초로 생성한 주체는 계정 A이므로 Undo가 정상적으로 수행되는 것을 알 수 있었음. 즉, **슬라이드가 오브젝트보다 Undo/Redo 우선순위가 높음**.
 
 이어서 계정 A가 Redo를 수행했더라도, 계정 B의 슬라이드 2에 대한 편집 내역과 계정 B는 연결고리가 끊겼으므로 계정 B가 Undo를 수행하면 슬라이드 2의 편집 내역이 아니라 슬라이드 1에서 마지막으로 수행했던 원 생성에 대하여 Undo를 수행하게 됨.
 
 
 
-##### 2-2-2-2. 테스트 2 - 텍스트 상자
+##### 2-2-1-2. 테스트 2 - 텍스트 상자
 
 **'3-2-1. 동시편집 Undo/Redo 테스트'와 내용이 동일함**
 
@@ -174,6 +188,10 @@ bYugBwWBXrREyyaBYAIfxfBxYtIegdCdVidsngfNKmp
 #### 2-2-2. 시간 기록 테스트
 
 ##### 2-2-2-1. 테스트 1 - 복원 시 버전 기록 양상
+
+![image](https://user-images.githubusercontent.com/53200166/136149230-f7ef8405-623e-4908-813f-5ad9573d64a5.png)
+
+![image](https://user-images.githubusercontent.com/53200166/136149258-b35949ca-caa1-4760-9421-71f60cd7db07.png)
 
 
 
