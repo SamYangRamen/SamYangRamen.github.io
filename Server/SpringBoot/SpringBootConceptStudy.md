@@ -231,11 +231,7 @@ public class Pencil implements Product {
 ```
 
 ```java
-public class Eraser implements Product {
-    public void say() {
-        System.out.println("eraser");
-    }
-}
+public class Eraser implements Product {    public void say() {        System.out.println("eraser");    }}
 ```
 
 위와 같이 작성하면, `Store`에 대한 수정을 할 필요 없이 `Pencil` 개발자는 `Pencil` 클래스에만 집중하고, `Eraser` 개발자는 `Eraser` 클래스에만 집중할 수 있다.
@@ -407,9 +403,7 @@ public interface MemberRepository {
 ```
 
 ```java
-public class MemberMemberRepository implements MemberRepository {
-
-}
+public class MemberMemberRepository implements MemberRepository {}
 ```
 
 이제 `MemberController` 클래스 안에 아래와 같이 내용을 작성하고 `@Controller` annotation을 추가하면, Spring 컨테이너에 `MemberController`라는 객체를 등록하고 관리하게 된다. 하지만 `memberService`에서 오류가 생겨 빨간 줄이 생기는데, 그것은 아직 `MemberService`가 순수 자바 클래스여서 Spring 컨테이너에 등록되지 않았기 때문이다. 따라서 `@Autowired` annotation을 써도 빨간 줄이 사라지지 않는다.
@@ -463,15 +457,7 @@ public class MemberMemberRepository implements MemberRepository {
   - 모델 클래스, 서버 클래스, XML 설정 파일이 분산되어 있어, 데이터 처리정보를 확인하기 위해서는 3파일 모두 봐야한다는 귀찮음이 있다.
 
   ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <beans
-  	... 생략
-      >
-      <bean id="userRepository" class="com.example.demo.UserRepositoryImpl" />
-      <bean id="userService" class="com.example.demo.UserServiceImpl">
-      	<constructor-arg ref="userRepository" />
-      </bean>
-  </beans>
+  <?xml version="1.0" encoding="UTF-8"?><beans	... 생략    >    <bean id="userRepository" class="com.example.demo.UserRepositoryImpl" />    <bean id="userService" class="com.example.demo.UserServiceImpl">    	<constructor-arg ref="userRepository" />    </bean></beans>
   ```
 
   위 예시(Application.xml)에서 각각의 Bean을 등록하고, 의존성을 주입받는 클래스에서는 constuctor-arg를 통해 다른 Bean을 주입받는 것을 볼 수 있다.
@@ -497,28 +483,7 @@ public class MemberMemberRepository implements MemberRepository {
 각 비지니스 로직의 앞/뒤에서 공통적으로 처리되어야 하는 **로그 처리, 보안 처리, 예외 처리, 트랜잭션 처리**와 같은 코드를 **별도로 분리**해 하나의 단위로 묶어 관리하는 것을 AOP라 한다.
 
 ```java
-class A {
- 
-    method a1() {
-        작업 P
-        method a1이 하는 일들
-        작업 Q
-    }
- 
-    method a2() {
-        작업 P
-        method a2가 하는 일들
-        작업 Q
-    }
-}
- 
-class B {
-    method b1() {
-        작업 P
-        method b1이 하는 일들
-        작업 Q
-    }
-}
+class A {     method a1() {        작업 P        method a1이 하는 일들        작업 Q    }     method a2() {        작업 P        method a2가 하는 일들        작업 Q    }} class B {    method b1() {        작업 P        method b1이 하는 일들        작업 Q    }}
 ```
 
 위와 같이 동일한 작업을 하는 코드 P, Q가 여기저기에서 흩어져서 사용되고 있으면, 코드 변경이 필요한 경우 일일이 다 찾아서 바꿔야 한다는 문제가 있다.
@@ -841,46 +806,96 @@ public class TimeCheckAspect {
 
 
 
-## PSA
+## PSA (Portable Service Abstraction)
+
+어떤 기술을 내부적으로 숨기고 개발자에게 개발 편의성을 제공해주는 것
+
+환경의 변화와 관계없이 일관된 방식의 기술로의 접근 환경을 제공하려는 것
+
+**Servlet**이란, 웹프로그래밍에서 클라이언트의 요청을 처리하고 그 결과를 다시 클라이언트에게 전송하는 Servlet 클래스의 구현 규칙을 지킨 자바 프로그래밍 기술을 말한다. 그런데 개발자는 Servlet과 같은 Row Level에 신경쓸 필요 없이 서비스 로직에만 집중할 수 있다. 즉, 개발자는 Servlet 애플리케이션을 만들고 있음에도 Servlet을 전혀 사용하지 않는 것이다.
 
 
 
-### JavaBean
+### PSA 예시 1 : MVC 패턴
 
 ```java
-import java.io.Serializable;
-
-public class ContactInfo {
-    
-    public ContactInfo() {
-        
-    }
-    
-    private String name;
-    private String phoneNumber;
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+// /owner/create
+public class OwnerCreateServlet extends HttpServlet {
+ 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		super.doGet(req, resp);
+	}
+ 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		super.doPost(req, resp);
+	}
 }
 ```
 
-위 예제와 같이 아래 3가지 규칙을 지키는 클래스
+우리는 지금까지 Servlet Application을 만들고 있지만 Servlet을 전혀 사용하지 않았다. Servlet 개발 경험이 있다면 위와 같은 코드를 볼 수 있었을 것이다.
 
-- 모든 field는 `private`이며, `getter/setter ` 메서드를 통해서만 접근이 가능하다.
-  - `getter/setter`의 접근 제한자는 `public`이어야 한다.
-- Argument가 없는 생성자가 존재한다.
-  - Argument가 있는 생성자가 존재해도 되지만, 그것만 있어서는 안된다는 뜻
-- `java.io.Serializable` interface를 `implement`한다.
+원래라면 `/owner/create/` 라는 URL을 통해서 GET이라는 HTTP 메서드로 들어오면 doGet()이, POST라는 HTTP 메서드로 들어오면 doPost()가 호출되도록, HttpServlet을 extends하여 오버라이딩해야 했었다.
+
+```java
+...
+
+    @GetMapping("/owners/new")
+    public String initCreationForm(Map<String, Object> model) {
+        ...
+    }
+
+    @PostMapping("/owners/new")
+    public String processCreationForm(@Valid Owner owner, BindingResult result) {
+        ...
+    }
+
+...
+```
+
+그러나 doGet(), doPost()를 직접 구현할 필요 없이 위와 같이 `@Controller `가 붙은 클래스 안에서 `@GetMapping`, `@PostMapping` 등의 Annotation을 사용하는 것 만으로, 요청을 받으면 해당 메서드를 실행하도록 할 수 있다. 그런데 실제로 그 아래에서는 Servlet으로 동작하고 있다.
+
+
+
+### PSA 예시 2 : 서버 선택
+
+기존에 사용하던 서버와 다른 서버를 사용하고자 할 때, 내부적으로 코드를 일일이 고칠 필요가 없어졌다.
+
+프로젝트의 `spring-boot-startet-web` 의존성 대신 `spring-boot-starter-webflux` 의존성을 받도록 바꿔주기만 하면 Tomcat이 아닌 Netty 기반으로 실행하게 할 수 있다.
+
+
+
+### PSA 예시 3 : 트랜잭션 처리
+
+```java
+try {
+    dbConnection.setAutoCommit(false);
+    doSomething()...
+    dbConnection.commit();
+    System.out.println("Done!");
+} catch(SQLException e) {
+    dbConnection.rollback();
+} finally {
+    ...
+    dbConnection.close();
+}
+```
+
+Low Level에서 DB 트랜잭션을 처리한다고 할 때 위와 같이 작성되어야 했다. 위 코드는 아래와 같은 과정을 구현한 것이다.
+
+- dbConnection.setAutoCommit(false);를 해주면
+
+- 자동적으로 커밋이 되는 것을 하지 않고 모든 과정이 완료된 후 명시적으로 커밋을 하면 커밋이 되도록 한다.
+
+- 그리고 여러 과정 중 에러가 하나라도 발생할 시 예외 처리단계로 가며 dbConnection.rollback();을 해서 돌려버린다.
+
+```java
+...
+	@Transactional(readOnly = true)
+	Employees findById(Integer id);
+...
+```
+
+(위는 JPA 예시) 하지만 Spring에서 `@Transactional` Annotation을 사용하면 Commit, Rollback 등의 행위들을 한번에 처리해준다.
+
