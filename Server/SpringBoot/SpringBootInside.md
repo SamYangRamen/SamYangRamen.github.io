@@ -208,3 +208,44 @@ Annotation 기반으로 Java에서 자주 사용되는 코드를 자동완성 �
 
 자바 프로그램을 데이터베이스에 연결하기 위한 라이브러리
 
+
+
+### JavaBean
+
+```java
+import java.io.Serializable;
+
+public class ContactInfo {
+    
+    public ContactInfo() {
+        
+    }
+    
+    private String name;
+    private String phoneNumber;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+}
+```
+
+위 예제와 같이 아래 3가지 규칙을 지키는 클래스
+
+- 모든 field는 `private`이며, `getter/setter ` 메서드를 통해서만 접근이 가능하다.
+  - `getter/setter`의 접근 제한자는 `public`이어야 한다.
+- Argument가 없는 생성자가 존재한다.
+  - Argument가 있는 생성자가 존재해도 되지만, 그것만 있어서는 안된다는 뜻
+- `java.io.Serializable` interface를 `implement`한다.
