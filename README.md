@@ -30,4 +30,5 @@ index.html부터 시작해서 홈페이지 형태로 디자인 예정 중에 있
 - 면접 준비
   - [자료구조](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/dataStructure.md)
   - [운영체제](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/operatingSystem.md)
+  - [네트워크](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/network.md)
   - [디자인 패턴](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/designPattern.md)
