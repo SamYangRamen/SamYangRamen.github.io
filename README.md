@@ -16,7 +16,7 @@ index.html부터 시작해서 홈페이지 형태로 디자인 예정 중에 있
     - [Gradle에 대하여](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/Server/SpringBoot/SpringBootInside.md)
     - [필수 개념 정리 (MVC, IOC/DI, AOP, PSA)](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/Server/SpringBoot/SpringBootConceptStudy.md)
 
-- 데이터베이스
+- SQL
 
   - MariaDB
     - [기초 CRUD](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/Database/MariaDB/MariaDB_basicCRUD.md)
@@ -31,4 +31,5 @@ index.html부터 시작해서 홈페이지 형태로 디자인 예정 중에 있
   - [자료구조](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/dataStructure.md)
   - [운영체제](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/operatingSystem.md)
   - [네트워크](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/network.md)
+  - [데이터베이스](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/database.md)
   - [디자인 패턴](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/designPattern.md)
