@@ -2,8 +2,6 @@
 
 프로젝트 진행 도중 필요했던 개념들, 또는 별도의 호기심에 의해 찾아봤던 개념들을 공부하고 요약 정리하는 페이지.
 
-교재가 없어서 구글링 또는 인터넷 강의 등으로 찾아보고 익힌 개념들을 주로 정리하였음
-
 index.html부터 시작해서 홈페이지 형태로 디자인 예정 중에 있음
 
 - 프로그래밍 언어
@@ -27,7 +25,7 @@ index.html부터 시작해서 홈페이지 형태로 디자인 예정 중에 있
     - [SQL 문법](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/Database/OracleOrTibero/Tibero_SQL_Grammar.md)
     - [Procedure](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/Database/OracleOrTibero/Tibero_Procedure.md)
 
-- 면접 준비
+- CS 기초
   - [자료구조](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/dataStructure.md)
   - [운영체제](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/operatingSystem.md)
   - [네트워크](https://github.com/SamYangRamen/SamYangRamen.github.io/blob/main/PrepareTechInterview/network.md)
