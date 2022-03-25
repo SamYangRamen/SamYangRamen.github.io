@@ -23,6 +23,8 @@ CREATE TABLE `BASIC_DATA` (
 ;
 ```
 
+
+
 ------
 
 
@@ -33,6 +35,8 @@ CREATE TABLE `BASIC_DATA` (
 DESC `BASIC_DATA`;
 ```
 
+
+
 | Field    | Type        | Null | Key  | Default | Extra |
 | -------- | ----------- | ---- | ---- | ------- | ----- |
 | 거래처명 | varchar(50) | YES  |      | \N      |       |
@@ -40,6 +44,8 @@ DESC `BASIC_DATA`;
 | 상품분류 | varchar(50) | YES  |      | \N      |       |
 | 수량     | int(8)      | YES  |      | \N      |       |
 | 단가     | int(8)      | YES  |      | \N      |       |
+
+
 
 ------
 
@@ -53,11 +59,15 @@ DESC `BASIC_DATA`;
 ALTER TABLE [테이블명] ADD COLUMN [추가할 컬럼명][추가할 컬럼 데이터형];
 ```
 
+
+
 #### 테이블 컬럼 타입 변경
 
 ```mysql
 ALTER TABLE [테이블명] MODIFY COLUMN [변경할 컬럼명][변경할 컬럼 타입];
 ```
+
+
 
 #### 테이블 컬럼 이름 변경
 
@@ -65,11 +75,15 @@ ALTER TABLE [테이블명] MODIFY COLUMN [변경할 컬럼명][변경할 컬럼 
 ALTER TABLE [테이블명] CHANGE COLUMN [기존 컬럼 명][변경할 컬럼 명][변경할 컬럼 타입];
 ```
 
+
+
 #### 테이블 컬럼 삭제
 
 ```mysql
 ALTER TABLE [테이블명] DROP COLUMN [삭제할 컬럼 명];
 ```
+
+
 
 ------
 
@@ -80,6 +94,8 @@ ALTER TABLE [테이블명] DROP COLUMN [삭제할 컬럼 명];
 ```mysql
 DROP TABLE IF EXISTS `BASIC_DATA`;
 ```
+
+
 
 ------
 
@@ -109,6 +125,8 @@ VALUES
 ;
 ```
 
+
+
 ------
 
 
@@ -118,6 +136,8 @@ VALUES
 ```mysql
 SELECT * FROM `BASIC_DATA`;
 ```
+
+
 
 | 거래처명        | 품명              | 상품분류 | 수량 |  단가 |
 | --------------- | ----------------- | -------- | ---: | ----: |
@@ -132,11 +152,17 @@ SELECT * FROM `BASIC_DATA`;
 | 나나문구 서현점 | A4용지            | 복사용지 |   30 | 20000 |
 | 나나문구 서현점 | 모나미 볼펜       | 필기구   |  250 |   100 |
 
+
+
 ------
+
+
 
 ```mysql
 SELECT DISTINCT 거래처명 AS 매장명 FROM `BASIC_DATA`;
 ```
+
+
 
 | 매장명          |
 | --------------- |
@@ -146,13 +172,19 @@ SELECT DISTINCT 거래처명 AS 매장명 FROM `BASIC_DATA`;
 
 ※ DINTINCT : 구성요소를 UNIQUE하게 가져옴
 
+
+
 ------
+
+
 
 ```mysql
 SELECT DISTINCT 거래처명, 품명, 단가
 FROM `BASIC_DATA`
 WHERE 수량<30;
 ```
+
+
 
 | 거래처명        | 품명              |  단가 |
 | --------------- | ----------------- | ----: |
@@ -162,13 +194,19 @@ WHERE 수량<30;
 | 나나문구 대치점 | 보드마카 청색     |  4300 |
 | 나나문구 서현점 | 데스크 오거나이저 | 15000 |
 
+
+
 ------
+
+
 
 ```mysql
 SELECT 거래처명, 품명, 단가
 FROM `BASIC_DATA`
 WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
 ```
+
+
 
 | 거래처명        | 품명            | 단가 |
 | --------------- | --------------- | ---: |
@@ -177,7 +215,11 @@ WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
 | 나나문구 대치점 | 보드마카 청색   | 4300 |
 | 가양 아트박스   | 합지 스프링노트 | 2500 |
 
+
+
 ------
+
+
 
 #### 조건에 맞는 데이터 검색하기
 
@@ -197,7 +239,11 @@ WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
   `SELECT * FROM 테이블명 WHERE 필드명 IS NULL;` 비어있는 값 가져오기
   `SELECT * FROM 테이블명 WHERE 필드명 IS NOT NULL;` 비어있지 않은 값 가져오기
 
+
+
 ------
+
+
 
 #### 데이터 순서 정렬하기
 
@@ -207,6 +253,8 @@ WHERE 단가 BETWEEN 1000 AND 10000 ORDER BY 3 DESC;
 - 결과 중 일부 데이터만 가져오기
   `SELECT * FROM 필드명 LIMIT 10;` 처음 10개만 가져오기
   `SELECT * FROM 필드명 LIMIT 100, 10;` 100번째부터 10개만 가져오기
+
+
 
 ------
 
@@ -220,6 +268,8 @@ SET 거래처명='폐점', 상품분류='판매중단'
 WHERE 거래처명='나나문구 대치점' AND 상품분류='필기구';
 ```
 
+
+
 | 거래처명        | 품명              | 상품분류 | 수량 |  단가 |
 | --------------- | ----------------- | -------- | ---: | ----: |
 | 가양 아트박스   | 합지 스프링노트   | 노트     |   20 |  2500 |
@@ -232,6 +282,8 @@ WHERE 거래처명='나나문구 대치점' AND 상품분류='필기구';
 | 나나문구 서현점 | 데스크 오거나이저 | 기타     |    5 | 15000 |
 | 나나문구 서현점 | A4용지            | 복사용지 |   30 | 20000 |
 | 나나문구 서현점 | 모나미 볼펜       | 필기구   |  250 |   100 |
+
+
 
 ### 4. DELETE
 

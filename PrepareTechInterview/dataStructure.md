@@ -1,11 +1,17 @@
 # 자료구조 & 알고리즘
 
+
+
 ## 자료구조
+
+
 
 ### Stack vs Queue
 
 - Stack : LIFO(후입선출), 뒤로가기
 - Queue : FIFO(선입선출), 대기줄
+
+
 
 ### Array vs Linked List
 
@@ -16,7 +22,11 @@
 | 접근속도  | 인덱스만 안다면 접근 가능, O(1)               | 하나하나 위치를 따라가서 접근, O(N)                      |
 | 삽입/삭제 | 요소들을 앞뒤로 밀고 당기는 과정이 포함, O(N) | 삽입/삭제 시 연결 위치로 접근하여 전후 포인터 조정, O(N) |
 
+
+
 ---
+
+
 
 ### Hash Table
 
@@ -61,7 +71,11 @@
   - Double Hashing Probing
     - 해시된 값을 한번 더 해싱하여 해시의 규칙성을 없애버리는 방식이다. 해시된 값을 한번 더 해싱하여 새로운 주소를 할당하기 때문에 다른 방법들보다 많은 연산을 하게 된다.
 
+
+
 ---
+
+
 
 ### 우선순위 큐(Priority Queue)
 
@@ -73,7 +87,11 @@
   - 삽입의 위치를 찾기 위해 리스트에 저장된 모든 데이터와 우선순위를 비교해야 한다.
 - 따라서 **Heap**을 이용하여 구현한다.
 
+
+
 ---
+
+
 
 ### Heap
 
@@ -89,6 +107,8 @@
   - 오른쪽 자식 index = (부모 index) \* 2 + 1
   - 부모 index = (자식 index) / 2
 
+
+
 #### Heap의 삽입
 
 ![image](https://user-images.githubusercontent.com/53200166/131070743-7f9709bf-0ee3-41be-a0b2-df89616c3d20.png)
@@ -97,13 +117,17 @@
 
 ![image](https://user-images.githubusercontent.com/53200166/131070751-f8c89351-a5be-4230-9b94-8a006874bda8.png)
 
+
+
 ---
+
+
 
 ### Graph
 
 - Tree 또한 그래프의 일종으로, 그 중 사이클이 허용되지 않은 그래프를 말한다.
 
-####
+
 
 #### 인접 행렬 vs 인접 리스트
 
@@ -113,7 +137,11 @@
 | 두 node i, j가 서로 연결됐는지 확인할 때 | index로 바로 접근이 가능                | 직접 해당 노드까지 이동해보면서 확인해야 함 |
 | 어떤 node에 연결된 모든 node에 방문할 때 | 나머지 모든 node와의 관계를 확인해야 함 | 포인터로 바로 접근이 가능                   |
 
+
+
 ---
+
+
 
 ### 이진탐색트리 (Binary Search Tree)
 
@@ -129,15 +157,23 @@
 
 ![image](https://user-images.githubusercontent.com/53200166/131070762-74b5b21d-fe9f-44f1-8100-f15c302e8f39.png)
 
+
+
 #### B Tree
 
 - DB 및 파일 시스템에서 널리 사용되는 자료구조
 - 이진트리를 확장시킨 것으로, 더 많은 수의 자식을 가질 수 있음
 - B Tree는 각 노드에 데이터가 저장되고, B+ Tree는 index 노드와 leaf 노드로 분리됨
 
+
+
 ---
 
+
+
 ## 정렬 알고리즘
+
+
 
 ### Bubble Sort
 
@@ -145,11 +181,15 @@
 
 ![bubble sort](https://user-images.githubusercontent.com/53200166/131070633-6e6e26f5-57f4-40db-bba2-cb8e692a08c6.gif)
 
+
+
 ### Selection Sort
 
 - 매 회전 마다 작은 걸 찾아서 맨 앞으로, O(n^2)
 
 ![selection sort](https://user-images.githubusercontent.com/53200166/131070650-cf36374f-43ef-4b10-ae8d-2429e021a1ba.gif)
+
+
 
 ### Insertion Sort
 
@@ -157,6 +197,8 @@
 - 최선은 O(n), 최악은 O(n^2)
 
 ![insertion sort](https://user-images.githubusercontent.com/53200166/131070658-3dc7c261-0472-4ad5-9a1e-9dc8c5739396.gif)
+
+
 
 ### Quick Sort
 
@@ -170,6 +212,8 @@
 
 ![quick sort](https://user-images.githubusercontent.com/53200166/131070664-78899c7c-90a0-4a6b-8fb6-3956aab3a65c.gif)
 
+
+
 ### Merge Sort
 
 - 영역을 쪼갤 수 있을 만큼 쪼갠 다음 점점 합병시키는 방식
@@ -177,6 +221,8 @@
 - 모든 경우에서 O(nlogn)
 
 ![merge sort](https://user-images.githubusercontent.com/53200166/131070667-bb455601-90e1-444a-8de7-342e2ba2b189.gif)
+
+
 
 ### Heap Sort
 
@@ -186,9 +232,15 @@
 
 ![heap sort](https://user-images.githubusercontent.com/53200166/131070670-9a277858-c70a-472a-99e5-ea984dacd91b.gif)
 
+
+
 ---
 
+
+
 ## 탐색 알고리즘
+
+
 
 ### Binary Search
 
@@ -199,9 +251,13 @@
   - left > right가 될 때까지 계속 반복
 - O(logN)
 
+
+
 ### DFS/BFS
 
 ![image](https://user-images.githubusercontent.com/53200166/131070726-85615822-0974-44e8-ae2b-e8896de80205.png)
+
+
 
 #### 깊이우선탐색(DFS, Depth-First Search)
 
@@ -211,6 +267,8 @@
 - Stack 또는 Recursive Function으로 구현
 - 시간복잡도 : 인접 행렬은 O(V^2), 인접 리스트는 O(V+E) (V는 접점, E는 간선)
 
+
+
 #### 너비우선탐색(BFS, Breadth-First Search)
 
 - 최대한 넓게 이동한 다음, 더 이상 갈 수 없을 때 아래로 이동
@@ -218,3 +276,4 @@
 - 최소 비용, 즉 최단거리 구하기 등에 적합함
 - Queue로 구현
 - 시간복잡도 : 인접 행렬은 O(V^2), 인접 리스트는 O(V+E) (V는 접점, E는 간선)
+
